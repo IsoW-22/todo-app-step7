@@ -1,19 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo</title>
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courgette&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="container">
+      <nav>
+        <span class="close-menu" onclick="closeMenu()"> &times; </span>
+        <span id="date"></span>
+        <ul>
+          <li><button class="upload">Upload</button></li>
+          <li><button class="download">Download</button></li>
+        </ul>
+        <ul class="tasks">
+          <li class="all selected-task">All Todos</li>
+          <li class="active">Active Todos</li>
+          <li class="completed">Completed Todos</li>
+        </ul>
+      </nav>
+      <article>
+        <div class="upper-part">
+          <span class="open-menu" onclick="openMenu()">&#9776;</span>
+          <div class="welcome-create-bundle">
+            <div class="welcome">
+              <p>welcome <span class="pointer user">new user</span></p>
+            </div>
+            <div class="big-create">
+              <div class="create" id="create">
+                <button>Create new Todo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="items"></div>
+        <div class="mobile-create">
+          <div class="create" id="create" onclick="">
+            <button>Create new Todo</button>
+          </div>
+        </div>
+      </article>
+    </div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./stylesheets/style.css">
-  <title>Welcome to the server</title>
-</head>
-
-<body>
-  <h1>Hello</h1>
-  <a href="http://localhost:3000/todo">To Do</a>
-  <br />
-  <a href="http://localhost:3000/calculator">Calculator</a>
-</body>
-
+    <script src="./scripts/date.js"></script>
+    <script src="./scripts/functions.js"></script>
+    <script src="./scripts/menu.js"></script>
+    <script src="./scripts/username.js"></script>
+    <script src="./scripts/upload.js"></script>
+    <script src="./scripts/download.js"></script>
+  </body>
 </html>
