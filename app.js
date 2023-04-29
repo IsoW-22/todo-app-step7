@@ -18,8 +18,8 @@ app.use(cookieParser());
 // Add the public folder as static for serving files
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/todo", indexRouter);
-app.use("/todo/users", usersRouter);
-app.use("/todo/database", database);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/database", database);
 
 module.exports = app;

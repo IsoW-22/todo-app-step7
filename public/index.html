@@ -45,7 +45,12 @@
               </div>
             </div>
           </div>
+          <div class="auth">
+            <button class="signup">Signup</button>
+            <button class="login">Login</button>
+          </div>
         </div>
+
         <div class="items"></div>
         <div class="mobile-create">
           <div class="create" id="create" onclick="">
@@ -55,11 +60,60 @@
       </article>
     </div>
 
+    <!-- modals -->
+    <div class="modal-UL">
+      <div class="modalContent">
+        <span class="close-modal">&times;</span>
+        <p>todos uploaded successfully</p>
+      </div>
+    </div>
+
+    <div class="modal-DL">
+      <div class="modalContent">
+        <span class="close-modal2">&times;</span>
+        <p>todos downloaded successfully</p>
+      </div>
+    </div>
+
+    <div class="modal-unatuh">
+      <div class="modalContent">
+        <span class="close-modal">&times;</span>
+        <p>Please login to use upload or download</p>
+      </div>
+    </div>
+    <!-- modals end -->
+
+    <!-- signup modal -->
+    <div class="modal-signup">
+      <div class="modalContent">
+        <span class="close-modal">&times;</span>
+        <form action="Post" class="signup-form">
+          <label for="fullName">Full name:</label>
+          <input type="text" name="fullname">
+
+          <label for="email">Email:</label>
+          <input type="text" name="email">
+
+          <label for="username">Username:</label>
+          <input type="text" name="username">
+
+          <label for="password">Password:</label>
+          <input type="password" name="password">
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <!-- signup end -->
+
+    <!-- login modal
+     -->
+    <!-- login end -->
+
     <script src="./scripts/date.js"></script>
     <script src="./scripts/functions.js"></script>
     <script src="./scripts/menu.js"></script>
     <script src="./scripts/username.js"></script>
-    <script src="./scripts/upload.js"></script>
-    <script src="./scripts/download.js"></script>
+    <script src="./scripts/modals.js"></script>
   </body>
 </html>

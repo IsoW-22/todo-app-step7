@@ -179,6 +179,9 @@ span {
   font-size: 2rem;
   width: 240px;
 }
+.upper-part {
+  display: flex;
+}
 
 .welcome {
   margin-left: 45px;
@@ -196,6 +199,74 @@ span {
 
 .mobile-create {
   display: none;
+}
+
+/* modals */
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+[class|="modal"] {
+  display: none;
+  position: fixed;
+  padding-top: 100px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+.modalContent {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  background-color: #5c3f3f;
+  animation-name: animatetop;
+  animation-duration: 0.5s;
+}
+.close-modal {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close-modal:hover,
+.close-modal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+[class|="modal"] p {
+  font-size: 1.2rem;
+  text-align: center;
+  color: white;
+}
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* modals end */
+
+/* signup form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+.signup-form input {
+  width: 60%;
+}
+.signup-form button {
+  width: 80px;
+  height: 30px;
 }
 
 @media only screen and (max-width: 720px) {

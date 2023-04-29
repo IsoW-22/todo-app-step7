@@ -221,3 +221,53 @@ const changeSelectedStyle = (selected) => {
     selectedList.classList.toggle("selected-task");
   }
 }
+
+// upload and download buttons :
+const unAuthModal = document.querySelector(".modal-unatuh");
+function openModalUnauth() {
+    unAuthModal.style.display = "block";
+}
+
+const downloadButton = document.querySelector(".download");
+downloadButton.addEventListener("click", fetchDL);
+
+async function fetchDL() {
+    const response = await fetch("http://localhost:3000/database/download");
+    if(response.status === 401) {
+      openModalUnauth();
+      return;
+    }
+    localStorage.removeItem("items");
+    const jsonResponse = response.json();
+    jsonResponse.forEach(element => {
+        createTodo(element.value, element.isdone, element.id, false);
+    });
+}
+
+const uploadButton = document.querySelector(".upload");
+uploadButton.addEventListener("click", fetchUL);
+
+async function fetchUL(){
+    const items = localStorage.getItem("items");
+    const result = await fetch("http://localhost:3000/database/upload" , {
+        method: "POST",
+        body: items,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        }
+    });
+    if(result.status === 401) {
+        openModalUnauth();
+    }
+}
+
+// signup and login pages :
+const signupBtn = document.querySelector(".signup");
+signupBtn.addEventListener("click", signup);
+const signupModal = document.querySelector(".modal-signup");
+async function signup() {
+  signupModal.style.display = "block";
+  const response = await fetch("");
+}
+
+const loginBtn = document.querySelector(".login")
