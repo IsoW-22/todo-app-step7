@@ -1,6 +1,9 @@
 [
   {
+    "fullname":"Ali ansari",
+    "email":"admin@admin.com",
     "username": "admin",
-    "password": "admin"
+    "password": "admin",
+    "token":"aisghoasdn"
   }
 ]

@@ -50,7 +50,6 @@
             <button class="login">Login</button>
           </div>
         </div>
-
         <div class="items"></div>
         <div class="mobile-create">
           <div class="create" id="create" onclick="">
@@ -87,27 +86,40 @@
     <div class="modal-signup">
       <div class="modalContent">
         <span class="close-modal">&times;</span>
-        <form action="Post" class="signup-form">
+        <form action="POST" class="signup-form">
           <label for="fullName">Full name:</label>
-          <input type="text" name="fullname">
+          <input type="text" name="fullname" required>
 
           <label for="email">Email:</label>
-          <input type="text" name="email">
+          <input type="text" name="email" required>
 
           <label for="username">Username:</label>
-          <input type="text" name="username">
+          <input type="text" name="username" required>
 
           <label for="password">Password:</label>
-          <input type="password" name="password">
+          <input type="password" name="password" minlength="8">
 
-          <button type="submit">Submit</button>
+          <button type="submit">Signup</button>
         </form>
       </div>
     </div>
     <!-- signup end -->
 
-    <!-- login modal
-     -->
+    <!-- login modal -->
+    <div class="modal-login">
+      <div class="modalContent">
+        <span class="close-modal">&times;</span>
+        <form action="POST" class="login-form">
+          <label for="username">Username:</label>
+          <input type="text" name="username" required>
+
+          <label for="password">Password:</label>
+          <input type="password" name="password" minlength="8">
+
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
     <!-- login end -->
 
     <script src="./scripts/date.js"></script>

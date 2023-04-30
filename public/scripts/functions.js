@@ -1,6 +1,6 @@
 "use strict";
 
-const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
+const createTodo = (todoText, doneCheck, todoId, oldTodo, role) => {
   const body = document.querySelector(".items");
   const counter = body.childNodes.length - 3;
 
@@ -105,7 +105,8 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
     const newTodo = {
       value: textarea.value,
       done: false,
-      id: `item-${counter}`
+      id: `item-${counter}`,
+      role: "guest"
     }
     if(localStorage.getItem("items")){
       const localStorageItems = JSON.parse(localStorage.getItem("items"));
@@ -238,7 +239,7 @@ async function fetchDL() {
       return;
     }
     localStorage.removeItem("items");
-    const jsonResponse = response.json();
+    const jsonResponse = await response.json();
     jsonResponse.forEach(element => {
         createTodo(element.value, element.isdone, element.id, false);
     });
@@ -248,6 +249,7 @@ const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL(){
+  try{
     const items = localStorage.getItem("items");
     const result = await fetch("http://localhost:3000/database/upload" , {
         method: "POST",
@@ -256,18 +258,49 @@ async function fetchUL(){
             "Content-type": "application/json; charset=UTF-8",
         }
     });
-    if(result.status === 401) {
-        openModalUnauth();
-    }
+  } catch (err){
+    console.log(err);
+  }
+    
+    // if(result.status === 401) {
+    //     openModalUnauth();
+    //     return;
+    // }
 }
 
-// signup and login pages :
-const signupBtn = document.querySelector(".signup");
-signupBtn.addEventListener("click", signup);
-const signupModal = document.querySelector(".modal-signup");
-async function signup() {
-  signupModal.style.display = "block";
-  const response = await fetch("");
-}
+//signup page:
+// const signupBtn = document.querySelector(".signup");
+// signupBtn.addEventListener("click", signup);
+// const signupModal = document.querySelector(".modal-signup");
+// async function signup() {
+//   signupModal.style.display = "block";
+//   const response = await fetch("");
+//}
 
-const loginBtn = document.querySelector(".login")
+//login page:
+const loginModal = document.querySelector(".modal-login");
+const loginForm = document.querySelector(".login-form");
+const loginPage = document.querySelector(".login");
+
+loginPage.addEventListener("click", () => {
+  loginModal.style.display = "block";
+});
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try{
+    const formData = new FormData(loginForm);
+    const formDataObj = Object.fromEntries(formData.entries());
+    const response = await fetch("http://localhost:3000/users/login", {
+      method: "POST",
+      body: JSON.stringify(formDataObj),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      }
+    });
+    const token = await response.json();
+    console.log(token.accessToken);
+  }catch(err){
+    console.error("username or password incorrect");
+  }
+})
