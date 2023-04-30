@@ -258,24 +258,38 @@ async function fetchUL(){
             "Content-type": "application/json; charset=UTF-8",
         }
     });
-  } catch (err){
-    console.log(err);
+  } catch {
+    openModalUnauth();
   }
-    
-    // if(result.status === 401) {
-    //     openModalUnauth();
-    //     return;
-    // }
 }
 
 //signup page:
-// const signupBtn = document.querySelector(".signup");
-// signupBtn.addEventListener("click", signup);
-// const signupModal = document.querySelector(".modal-signup");
-// async function signup() {
-//   signupModal.style.display = "block";
-//   const response = await fetch("");
-//}
+const signupBtn = document.querySelector(".signup");
+signupBtn.addEventListener("click", () => { signupModal.style.display = "block"; });
+const signupModal = document.querySelector(".modal-signup");
+
+const signupForm = document.querySelector(".signup-form");
+signupForm.addEventListener("submit", signup)
+async function signup(event){
+  event.preventDefault();
+  const formData = new FormData(signupForm);
+  const formDataObj = Object.fromEntries(formData.entries());
+  const todos = JSON.parse(localStorage.getItem("items"));
+  if(todos) {
+    formDataObj.todos = todos;
+  }
+  const response = await fetch("http://localhost:3000/users/signup", {
+    method: "POST",
+    body: JSON.stringify(formDataObj),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    }
+  });
+  const res = await response.json();
+  console.log(res);
+}
+
+
 
 //login page:
 const loginModal = document.querySelector(".modal-login");

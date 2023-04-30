@@ -1,9 +1,13 @@
 [
   {
-    "fullname":"Ali ansari",
-    "email":"admin@admin.com",
-    "username": "admin",
-    "password": "admin",
-    "token":"aisghoasdn"
+    "fullname": "eyrh",
+    "email": "erye",
+    "username": "erer",
+    "password": "eryeryheyre",
+    "todos": [
+      { "value": "new task", "done": false, "id": "item--3" },
+      { "value": "new task", "done": false, "id": "item--2" }
+    ],
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyZXIiLCJpYXQiOjE2ODI4NTY3OTJ9.twjy-KNz8DOdHS7tPC6LAlEUB11CtMXWD3AlkxGggaE"
   }
 ]

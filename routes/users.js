@@ -23,12 +23,7 @@ router.post("/login", (req, res) => {
     });
 
     if (user) {
-      // Generate an access token
-      const accessToken = jwt.sign(
-        { username: user.username, role: user.role },
-        accessTokenSecret
-      );
-
+      const accessToken = user.token;
       res.json({
         accessToken,
       });
@@ -37,5 +32,38 @@ router.post("/login", (req, res) => {
     }
   });
 });
+
+router.post("/signup", (req,res) => {
+  const user = req.body;
+  user.token = jwt.sign(
+    { username: user.username, role: user.role },
+    accessTokenSecret
+  );
+  res.json(user);
+  const data = dataBase(user);
+  fs.writeFile(
+    "./database/users.json",
+    JSON.stringify(data),
+    { encoding: "utf-8" },
+    (err) => {
+      if (err) res.send(err);
+      return;
+    }
+  );
+  res.send("User added!");
+})
+
+function dataBase(user) {
+  fs.readFile("./database/users.json", { encoding: "utf-8" }, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+
+    let jsonData = JSON.parse(data);
+    console.log(jsonData);
+    jsonData.push(user);
+    return jsonData;
+  });
+}
 
 module.exports = router;
