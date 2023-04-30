@@ -269,6 +269,13 @@ body {
   height: 30px;
 }
 
+.logged-in {
+  font-size: 20px;
+  color: green !important;
+  margin-top: 15px;
+  display: none;
+}
+
 @media only screen and (max-width: 720px) {
   article {
     overflow: auto;

@@ -269,15 +269,13 @@ signupBtn.addEventListener("click", () => { signupModal.style.display = "block";
 const signupModal = document.querySelector(".modal-signup");
 
 const signupForm = document.querySelector(".signup-form");
-signupForm.addEventListener("submit", signup)
+signupForm.addEventListener("submit", signup);
+
 async function signup(event){
   event.preventDefault();
   const formData = new FormData(signupForm);
   const formDataObj = Object.fromEntries(formData.entries());
-  const todos = JSON.parse(localStorage.getItem("items"));
-  if(todos) {
-    formDataObj.todos = todos;
-  }
+  formDataObj.todos = [];
   const response = await fetch("http://localhost:3000/users/signup", {
     method: "POST",
     body: JSON.stringify(formDataObj),
@@ -295,6 +293,7 @@ async function signup(event){
 const loginModal = document.querySelector(".modal-login");
 const loginForm = document.querySelector(".login-form");
 const loginPage = document.querySelector(".login");
+const welcome = document.querySelector(".logged-in");
 
 loginPage.addEventListener("click", () => {
   loginModal.style.display = "block";
@@ -302,19 +301,21 @@ loginPage.addEventListener("click", () => {
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  try{
-    const formData = new FormData(loginForm);
-    const formDataObj = Object.fromEntries(formData.entries());
-    const response = await fetch("http://localhost:3000/users/login", {
-      method: "POST",
-      body: JSON.stringify(formDataObj),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      }
-    });
-    const token = await response.json();
-    console.log(token.accessToken);
-  }catch(err){
-    console.error("username or password incorrect");
+  const formData = new FormData(loginForm);
+  const formDataObj = Object.fromEntries(formData.entries());
+  const response = await fetch("http://localhost:3000/users/login", {
+    method: "POST",
+    body: JSON.stringify(formDataObj),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    }
+  });
+  const token = await response.json();
+  if(token.hasOwnProperty("accessToken")){
+    localStorage.setItem("token", JSON.stringify(token.accessToken));
+    welcome.innerText = `welcome ${token.fullname}`;
+    welcome.style.display = "block";
+  } else {
+    console.log("credentials does not match.");
   }
 })

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
+const fsp = fs.promises;
 const jwt = require("jsonwebtoken");
 
 /** @type {string} The secret secret to sign the JWT token. */
@@ -24,46 +25,36 @@ router.post("/login", (req, res) => {
 
     if (user) {
       const accessToken = user.token;
+      const fullname = user.fullname;
       res.json({
         accessToken,
+        fullname,
       });
     } else {
-      res.send("Username or password incorrect");
+      res.json("Username or password incorrect");
     }
   });
 });
 
-router.post("/signup", (req,res) => {
+router.post("/signup", async (req,res) => {
   const user = req.body;
   user.token = jwt.sign(
-    { username: user.username, role: user.role },
+    { username: user.username, email: user.email },
     accessTokenSecret
   );
-  res.json(user);
-  const data = dataBase(user);
-  fs.writeFile(
+  const data = await fsp.readFile("./database/users.json", { encoding: "utf-8" });
+  const jdata = JSON.parse(data);
+  jdata.push(user);
+  await fsp.writeFile(
     "./database/users.json",
-    JSON.stringify(data),
+    JSON.stringify(jdata),
     { encoding: "utf-8" },
     (err) => {
       if (err) res.send(err);
       return;
     }
   );
-  res.send("User added!");
+  res.json("User added!");
 })
-
-function dataBase(user) {
-  fs.readFile("./database/users.json", { encoding: "utf-8" }, (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-
-    let jsonData = JSON.parse(data);
-    console.log(jsonData);
-    jsonData.push(user);
-    return jsonData;
-  });
-}
 
 module.exports = router;
