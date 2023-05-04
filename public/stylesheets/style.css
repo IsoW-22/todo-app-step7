@@ -275,6 +275,16 @@ body {
   margin-top: 15px;
   display: none;
 }
+.exist {
+  font-size: 20px;
+  color: red !important;
+  display: none;
+}
+.signed {
+  font-size: 20px;
+  color: green !important;
+  display: none;
+}
 
 @media only screen and (max-width: 720px) {
   article {

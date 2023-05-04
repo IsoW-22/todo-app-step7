@@ -42,19 +42,40 @@ router.post("/signup", async (req,res) => {
     { username: user.username, email: user.email },
     accessTokenSecret
   );
-  const data = await fsp.readFile("./database/users.json", { encoding: "utf-8" });
-  const jdata = JSON.parse(data);
-  jdata.push(user);
+  const users = await fsp
+    .readFile("./database/users.json", { encoding: "utf-8" })
+    .then((fileData) => JSON.parse(fileData));
+  const found = users.find((u) => {
+    return u.email === user.email;
+  })
+  if(found) {
+    res.status(403).json("user exist!");
+    return;
+  }
+  users.push(user);
   await fsp.writeFile(
     "./database/users.json",
-    JSON.stringify(jdata),
+    JSON.stringify(users),
     { encoding: "utf-8" },
     (err) => {
       if (err) res.send(err);
       return;
     }
   );
-  res.json("User added!");
+  res.status(200).json(user.token);
+})
+
+router.post("/username", (req,res) => {
+  const user = req.body;
+  let users = fs.readFile("./database/users.json", { encoding: "utf-8" });
+  users = JSON.parse(users);
+  const found = users.find((u) => {
+    return u.token === user;
+  })
+  if(found) {
+    const fullname = found.fullname;
+      res.send(fullname);
+  }
 })
 
 module.exports = router;

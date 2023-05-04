@@ -9,13 +9,5 @@
       { "value": "new task", "done": false, "id": "item--2" }
     ],
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"
-  },
-  {
-    "fullname": "reyahane rahimian",
-    "email": "isowz2000@gmail.com",
-    "username": "riri",
-    "password": "adminadmin",
-    "todos": [],
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imlzb3dfMjEiLCJpYXQiOjE2ODI4ODc2NDR9.6eUaSatdGFaI3LTVtq4t_KcCysV7yki7rARlIaMnkU0"
   }
 ]

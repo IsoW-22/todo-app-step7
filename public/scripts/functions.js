@@ -1,6 +1,6 @@
 "use strict";
 
-const createTodo = (todoText, doneCheck, todoId, oldTodo, role) => {
+const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
   const body = document.querySelector(".items");
   const counter = body.childNodes.length - 3;
 
@@ -105,8 +105,7 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo, role) => {
     const newTodo = {
       value: textarea.value,
       done: false,
-      id: `item-${counter}`,
-      role: "guest"
+      id: `item-${counter}`
     }
     if(localStorage.getItem("items")){
       const localStorageItems = JSON.parse(localStorage.getItem("items"));
@@ -145,6 +144,35 @@ createNewTodo.forEach(element => {
   });
 });
 
+// page onload
+const token = localStorage.getItem("token");
+if(token) {
+  document.querySelector(".signup").style.display = "none";
+  document.querySelector(".login").style.display = "none";
+  document.querySelector(".signout").style.display = "block";
+  if(token){
+    const getUsername = async (token) => {
+      const response = await fetch("http://localhost:3000/users/username", {
+        method: "POST",
+        body: JSON.stringify(token),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
+      });
+      if(!response.ok){
+        return "failed";
+      } else {
+        return response.text();
+      }
+    }
+    console.log(getUsername(token));
+  }
+}
+else {
+  document.querySelector(".signup").style.display = "block";
+  document.querySelector(".login").style.display = "block";
+  document.querySelector(".signout").style.display = "none";
+}
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
 if(checkLocal !== null)
@@ -153,7 +181,6 @@ if(checkLocal !== null)
       createTodo(element.value, element.done, element.id, true);
   });
 }
-
 
 //showing all todos
 const allTodoSelect = () => {
@@ -249,30 +276,30 @@ const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL(){
-  try{
-    const items = localStorage.getItem("items");
-    const result = await fetch("http://localhost:3000/database/upload" , {
-        method: "POST",
-        body: items,
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        }
-    });
-  } catch {
-    openModalUnauth();
-  }
+  const items = localStorage.getItem("items");
+  const result = await fetch("http://localhost:3000/database/upload" , {
+      method: "POST",
+      body: items,
+      headers: {
+          "Content-type": "application/json; charset=UTF-8",
+      }
+  });
 }
 
 //signup page:
 const signupBtn = document.querySelector(".signup");
 signupBtn.addEventListener("click", () => { signupModal.style.display = "block"; });
 const signupModal = document.querySelector(".modal-signup");
+const exist = document.querySelector(".exist");
+const signedUp = document.querySelector(".signed");
 
 const signupForm = document.querySelector(".signup-form");
 signupForm.addEventListener("submit", signup);
 
 async function signup(event){
+  exist.style.display = "none";
   event.preventDefault();
+
   const formData = new FormData(signupForm);
   const formDataObj = Object.fromEntries(formData.entries());
   formDataObj.todos = [];
@@ -283,8 +310,24 @@ async function signup(event){
       "Content-type": "application/json; charset=UTF-8",
     }
   });
-  const res = await response.json();
-  console.log(res);
+  if(!response.ok) {
+    const err = await response.text();
+    if(response.status === 403){
+      exist.style.display = "block";
+      return;
+    }
+    else {
+      console.log("error: " + err);
+    }
+  } else {
+    let token = await response.text();
+    token = token.replace(/^"(.*)"$/, '$1');
+    localStorage.setItem("token", token);
+    signedUp.style.display = "block";
+    setTimeout(() => {
+      location.reload();
+    }, 2500);
+  }
 }
 
 
