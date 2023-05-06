@@ -77,3 +77,8 @@ typings/
 # next.js build output
 
 .next
+
+
+#database
+
+database/users.json
