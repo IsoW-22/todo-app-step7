@@ -168,11 +168,6 @@ if(token) {
     console.log(getUsername(token));
   }
 }
-else {
-  document.querySelector(".signup").style.display = "block";
-  document.querySelector(".login").style.display = "block";
-  document.querySelector(".signout").style.display = "none";
-}
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
 if(checkLocal !== null)
@@ -358,7 +353,15 @@ loginForm.addEventListener("submit", async (event) => {
     localStorage.setItem("token", JSON.stringify(token.accessToken));
     welcome.innerText = `welcome ${token.fullname}`;
     welcome.style.display = "block";
+    location.reload();
   } else {
     console.log("credentials does not match.");
   }
 })
+
+//signout page :
+const signout = document.querySelector(".signout");
+signout.addEventListener("click" , () => {
+  localStorage.removeItem("token");
+  location.reload();
+});

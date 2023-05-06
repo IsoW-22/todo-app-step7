@@ -76,6 +76,6 @@ router.post("/username", (req,res) => {
     const fullname = found.fullname;
       res.send(fullname);
   }
-})
+});
 
 module.exports = router;
