@@ -337,7 +337,7 @@ async function signup(event){
       console.log("error: " + err);
     }
   } else {
-    let token = await response.text();
+    let token = await response.json();
     localStorage.setItem("token", JSON.stringify(token));
     signedUp.style.display = "block";
     setTimeout(() => {

@@ -1,13 +1,1 @@
-[
-  {
-    "fullname": "mostafa zeighami",
-    "email": "sdgsdg",
-    "username": "mosi",
-    "password": "adminadmin",
-    "todos": [
-      { "value": "new task", "done": false, "id": "item--3" },
-      { "value": "new task", "done": false, "id": "item--2" }
-    ],
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"
-  }
-]
+[{"fullname":"mostafa zeighami","email":"sdgsdg","username":"mosi","password":"adminadmin","todos":[{"value":"new task","done":false,"id":"item--3"},{"value":"new task","done":false,"id":"item--2"}],"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"},{"fullname":"thfhtet","email":"isowz2000@gmail.com","username":"isow_21","password":"ssssssssssssss","todos":[],"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imlzb3dfMjEiLCJlbWFpbCI6Imlzb3d6MjAwMEBnbWFpbC5jb20iLCJpYXQiOjE2ODM0MDcxMjN9.A78rV1__RqIa-JBvaWNyQPBZdSuDms0lJGSIpdFgwJU"}]
