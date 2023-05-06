@@ -23,14 +23,22 @@ router.post("/upload", authenticateJWT, (req, res) => {
 /**
  * Sends todos from the database/todos.json file as json
  */
-router.get("/download", authenticateJWT, (req, res) => {
-  fs.readFile("./database/todos.json", { encoding: "utf-8" }, (err, data) => {
-    if (err) {
-      res.send(err);
-      return;
-    }
+router.post("/download", (req, res) => {
+  const { token } = req.body;
+  fs.readFile("./database/users.json", (err, data) => {
+    if (err) throw err;
 
-    res.send(data);
+    const users = JSON.parse(data);
+
+    const user = users.find((u) => {
+      return u.token === JSON.parse(token);
+    });
+
+    if (user) {
+      res.json(user.todos);
+    } else {
+      res.sendStatus(401);
+    }
   });
 });
 

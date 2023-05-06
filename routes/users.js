@@ -66,9 +66,8 @@ router.post("/signup", async (req,res) => {
 })
 
 router.post("/username", (req, res) => {
-  // Read username and password from request body
+
   const { token } = req.body;
-  console.log(JSON.parse(token));
   fs.readFile("./database/users.json", (err, data) => {
     if (err) throw err;
 
@@ -81,7 +80,7 @@ router.post("/username", (req, res) => {
     if (user) {
       res.json(user.fullname);
     } else {
-      res.status(404).json("user not found");
+      res.status(403).json("user not found");
     }
   });
 });

@@ -9,9 +9,13 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
   todoContainer.id = todoId ? todoId : `item-${counter}`;
   const textarea = buildElement("input", "task");
   textarea.value = todoText ? todoText : "";
-  textarea.readOnly = todoText? true : false;
+  textarea.readOnly = todoText ? true : false;
   textarea.addEventListener("focusout", () => {
-    if(textarea.value === " " || textarea.value === null || textarea.value === ""){
+    if (
+      textarea.value === " " ||
+      textarea.value === null ||
+      textarea.value === ""
+    ) {
       textarea.value = "new task";
     }
     textarea.readOnly = true;
@@ -23,46 +27,44 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
   //edit button
   const editButton = buildElement("button", "edit-icon");
   const editImg = buildElement("img");
-  editImg.src = 
-  "https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/null/external-edit-web-flaticons-lineal-color-flat-icons-5.png";
+  editImg.src =
+    "https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/null/external-edit-web-flaticons-lineal-color-flat-icons-5.png";
   editImg.alt = "edit";
   editButton.appendChild(editImg);
   editButton.addEventListener("click", (event) => {
-    const {target} = event;
+    const { target } = event;
     const input = target.parentNode.parentNode.querySelector(".task");
     input.readOnly = false;
     input.focus();
     input.select();
-  })
+  });
 
   // done button
   const doneButton = buildElement("button", "tick-icon");
   const doneImg = buildElement("img");
-  doneImg.src =
-  "https://img.icons8.com/doodle/48/null/checked-checkbox.png";
+  doneImg.src = "https://img.icons8.com/doodle/48/null/checked-checkbox.png";
   doneImg.alt = "done";
   doneButton.appendChild(doneImg);
   doneButton.addEventListener("click", (event) => {
-    const {target} = event;
+    const { target } = event;
     const parent = target.parentNode.parentNode;
     const parentID = parent.id;
-    if(parent.classList.contains("done-item")){
+    if (parent.classList.contains("done-item")) {
       parent.classList.toggle("done-item");
       let allTodos = JSON.parse(localStorage.getItem("items"));
-      allTodos.find(element => {
-        if(element.id === parentID) {
+      allTodos.find((element) => {
+        if (element.id === parentID) {
           element.done = false;
         }
       });
       allTodos = JSON.stringify(allTodos);
       localStorage.setItem("items", allTodos);
       parent.querySelector(".edit-icon").disabled = false;
-    }
-    else {
+    } else {
       parent.classList.toggle("done-item");
       let allTodos = JSON.parse(localStorage.getItem("items"));
-      allTodos.find(element => {
-        if(element.id === parentID) {
+      allTodos.find((element) => {
+        if (element.id === parentID) {
           element.done = true;
         }
       });
@@ -75,20 +77,22 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
   doneAndEditContainer.appendChild(doneButton);
   doneAndEditContainer.appendChild(editButton);
   todoContainer.appendChild(doneAndEditContainer);
-  if(doneCheck) doneButton.click();
-  
+  if (doneCheck) doneButton.click();
+
   //delete button
   const deleteButton = buildElement("button", "delete-icon");
   const deleteImg = buildElement("img");
   deleteImg.src = "https://img.icons8.com/arcade/35/null/close-window.png";
-  deleteImg.alt = "delete"
+  deleteImg.alt = "delete";
   todoContainer.appendChild(deleteButton);
   deleteButton.appendChild(deleteImg);
   deleteButton.addEventListener("click", (event) => {
-    const {target} = event;
+    const { target } = event;
     const targetID = target.parentNode.id;
     let items = JSON.parse(localStorage.getItem("items"));
-    let filtered = items.filter(function(el) { return el.id != targetID; });
+    let filtered = items.filter(function (el) {
+      return el.id != targetID;
+    });
     filtered = JSON.stringify(filtered);
     localStorage.setItem("items", filtered);
     target.parentNode.remove();
@@ -100,49 +104,46 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
   //adding client-side database
   if (oldTodo) {
     return;
-  }
-  else {
+  } else {
     const newTodo = {
       value: textarea.value,
       done: false,
-      id: `item-${counter}`
-    }
-    if(localStorage.getItem("items")){
+      id: `item-${counter}`,
+    };
+    if (localStorage.getItem("items")) {
       const localStorageItems = JSON.parse(localStorage.getItem("items"));
       localStorageItems.push(newTodo);
       localStorage.setItem("items", JSON.stringify(localStorageItems));
-    }
-    else {
+    } else {
       const jsonNewTodo = JSON.stringify(newTodo);
       localStorage.setItem("items", `[${jsonNewTodo}]`);
     }
   }
-}
+};
 
 const contentChanged = (text, id) => {
   let localStorageItems = JSON.parse(localStorage.getItem("items"));
-  localStorageItems.find(element => {
-    if(element.id === id) {
+  localStorageItems.find((element) => {
+    if (element.id === id) {
       element.value = text;
     }
   });
   localStorageItems = JSON.stringify(localStorageItems);
   localStorage.setItem("items", localStorageItems);
-}
+};
 
 const buildElement = (element, cssClass) => {
   const newElement = document.createElement(element);
-  if(cssClass)
-      newElement.classList.add(cssClass);
+  if (cssClass) newElement.classList.add(cssClass);
   return newElement;
-}
+};
 
 const createNewTodo = document.querySelectorAll(".create");
 const unlogModal = document.querySelector(".modal-caution");
 let once = localStorage.getItem("name");
-createNewTodo.forEach(element => {
+createNewTodo.forEach((element) => {
   element.addEventListener("click", () => {
-    if(!once){
+    if (!once) {
       unlogModal.style.display = "block";
       once = true;
     }
@@ -152,20 +153,20 @@ createNewTodo.forEach(element => {
 
 // page onload
 const token = localStorage.getItem("token");
-if(token) {
+if (token) {
   document.querySelector(".signup").style.display = "none";
   document.querySelector(".login").style.display = "none";
   document.querySelector(".signout").style.display = "block";
   (async () => {
-    const tokenObj = {token: `${token}`};
+    const tokenObj = { token: `${token}` };
     const response = await fetch("http://localhost:3000/users/username", {
       method: "POST",
       body: JSON.stringify(tokenObj),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-      }
+      },
     });
-    if(!response.ok){
+    if (!response.ok) {
       const err = await response.json();
       console.log(`error: ${err}`);
       return;
@@ -181,24 +182,23 @@ if(token) {
   document.querySelector(".user").innerHTML = "guest";
 }
 
-
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
-if(checkLocal !== null)
-  if(checkLocal !== "[]"){
-    checkLocal.forEach(element => {
+if (checkLocal !== null)
+  if (checkLocal !== "[]") {
+    checkLocal.forEach((element) => {
       createTodo(element.value, element.done, element.id, true);
-  });
-}
+    });
+  }
 
 //showing all todos
 const allTodoSelect = () => {
   const todosInPage = document.querySelectorAll(".items .todo-item");
-  todosInPage.forEach(element => {
+  todosInPage.forEach((element) => {
     element.style.display = "flex";
-  })
+  });
   changeSelectedStyle(".all");
-}
+};
 
 const allTodos = document.querySelector(".all");
 allTodos.addEventListener("click", allTodoSelect);
@@ -207,20 +207,22 @@ allTodos.addEventListener("click", allTodoSelect);
 const activeTodoSelect = () => {
   const todosInStorage = JSON.parse(localStorage.getItem("items"));
   const todosInPage = document.querySelectorAll(".items .todo-item");
-  const filteredITems = todosInStorage.filter(function(el) { return el.done !== true; });
-  todosInPage.forEach(element => {
+  const filteredITems = todosInStorage.filter(function (el) {
+    return el.done !== true;
+  });
+  todosInPage.forEach((element) => {
     element.style.display = "none";
-  })
-  for(let i = 0; i < todosInPage.length; i++) {
-    for(let j = 0; j < filteredITems.length; j++) {
-      if(todosInPage[i].id === filteredITems[j].id) {
+  });
+  for (let i = 0; i < todosInPage.length; i++) {
+    for (let j = 0; j < filteredITems.length; j++) {
+      if (todosInPage[i].id === filteredITems[j].id) {
         todosInPage[i].style.display = "flex";
       }
     }
   }
   //for select style change
   changeSelectedStyle(".active");
-}
+};
 
 const activeTodos = document.querySelector(".active");
 activeTodos.addEventListener("click", activeTodoSelect);
@@ -229,20 +231,22 @@ activeTodos.addEventListener("click", activeTodoSelect);
 const doneTodoSelect = () => {
   const todosInStorage = JSON.parse(localStorage.getItem("items"));
   const todosInPage = document.querySelectorAll(".items .todo-item");
-  const filteredITems = todosInStorage.filter(function(el) { return el.done !== false; });
-  todosInPage.forEach(element => {
+  const filteredITems = todosInStorage.filter(function (el) {
+    return el.done !== false;
+  });
+  todosInPage.forEach((element) => {
     element.style.display = "none";
-  })
-  for(let i = 0; i < todosInPage.length; i++) {
-    for(let j = 0; j < filteredITems.length; j++) {
-      if(todosInPage[i].id === filteredITems[j].id) {
+  });
+  for (let i = 0; i < todosInPage.length; i++) {
+    for (let j = 0; j < filteredITems.length; j++) {
+      if (todosInPage[i].id === filteredITems[j].id) {
         todosInPage[i].style.display = "flex";
       }
     }
   }
   //for select style change
   changeSelectedStyle(".completed");
-}
+};
 
 const doneTodos = document.querySelector(".completed");
 doneTodos.addEventListener("click", doneTodoSelect);
@@ -250,51 +254,73 @@ doneTodos.addEventListener("click", doneTodoSelect);
 //for style change
 const changeSelectedStyle = (selected) => {
   const allLists = document.querySelectorAll("ul li");
-  allLists.forEach(element => {
+  allLists.forEach((element) => {
     element.classList.remove("selected-task");
-  })
+  });
   const selectedList = document.querySelector(selected);
-  if(!selectedList.classList.contains("selected-task")){
+  if (!selectedList.classList.contains("selected-task")) {
     selectedList.classList.toggle("selected-task");
   }
-}
+};
 
 // upload and download buttons :
 const unAuthModal = document.querySelector(".modal-unatuh");
 function openModalUnauth() {
-    unAuthModal.style.display = "block";
+  unAuthModal.style.display = "block";
 }
 
 const downloadButton = document.querySelector(".download");
 downloadButton.addEventListener("click", fetchDL);
 
 async function fetchDL() {
-    const response = await fetch("http://localhost:3000/database/download");
-    if(response.status === 401) {
+  // const response = await fetch("http://localhost:3000/database/download");
+  // if(response.status === 401) {
+  //   openModalUnauth();
+  //   return;
+  // }
+  const response = await fetch("http://localhost:3000/database/download", {
+    method: "POST",
+    body: JSON.stringify({ token: `${localStorage.getItem("token")}` }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  if (!response.ok) {
+    if (response.status === 401) {
       openModalUnauth();
       return;
+    } else {
+      const err = await response.json();
+      console.log(`error: ${err}`);
     }
+  } else {
     localStorage.removeItem("items");
-    const jsonResponse = await response.json();
-    jsonResponse.forEach(element => {
-        createTodo(element.value, element.isdone, element.id, false);
+    const removeTodos = document.querySelectorAll(".items .todo-item");
+    removeTodos.forEach((item) => {
+      item.remove();
     });
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
+    jsonResponse.forEach((element) => {
+      createTodo(element.value, element.isdone, element.id, false);
+    });
+  }
 }
 
 const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
-async function fetchUL(){
+async function fetchUL() {
   const items = localStorage.getItem("items");
-  const response = await fetch("http://localhost:3000/database/upload" , {
-      method: "POST",
-      body: items,
-      headers: {
-          "Content-type": "application/json; charset=UTF-8",
-      }
+  const response = await fetch("http://localhost:3000/database/upload", {
+    method: "POST",
+    body: items,
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
   });
-  if(!response.ok){
-    if(response.status === 401) {
+  if (!response.ok) {
+    if (response.status === 401) {
       openModalUnauth();
       return;
     }
@@ -305,7 +331,9 @@ async function fetchUL(){
 
 //signup page:
 const signupBtn = document.querySelector(".signup");
-signupBtn.addEventListener("click", () => { signupModal.style.display = "block"; });
+signupBtn.addEventListener("click", () => {
+  signupModal.style.display = "block";
+});
 const signupModal = document.querySelector(".modal-signup");
 const exist = document.querySelector(".exist");
 const signedUp = document.querySelector(".signed");
@@ -313,7 +341,7 @@ const signedUp = document.querySelector(".signed");
 const signupForm = document.querySelector(".signup-form");
 signupForm.addEventListener("submit", signup);
 
-async function signup(event){
+async function signup(event) {
   exist.style.display = "none";
   event.preventDefault();
 
@@ -325,15 +353,14 @@ async function signup(event){
     body: JSON.stringify(formDataObj),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-    }
+    },
   });
-  if(!response.ok) {
+  if (!response.ok) {
     const err = await response.text();
-    if(response.status === 403){
+    if (response.status === 403) {
       exist.style.display = "block";
       return;
-    }
-    else {
+    } else {
       console.log("error: " + err);
     }
   } else {
@@ -366,22 +393,24 @@ loginForm.addEventListener("submit", async (event) => {
     body: JSON.stringify(formDataObj),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
-    }
+    },
   });
   const token = await response.json();
-  if(token.hasOwnProperty("accessToken")){
+  if (token.hasOwnProperty("accessToken")) {
     localStorage.setItem("token", JSON.stringify(token.accessToken));
     welcome.innerText = `welcome ${token.fullname}`;
     welcome.style.display = "block";
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 2500);
   } else {
     document.querySelector(".not-match").style.display = "block";
   }
-})
+});
 
 //signout:
 const signout = document.querySelector(".signout");
-signout.addEventListener("click" , () => {
+signout.addEventListener("click", () => {
   localStorage.removeItem("token");
   location.reload();
 });
