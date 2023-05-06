@@ -273,11 +273,6 @@ const downloadButton = document.querySelector(".download");
 downloadButton.addEventListener("click", fetchDL);
 
 async function fetchDL() {
-  // const response = await fetch("http://localhost:3000/database/download");
-  // if(response.status === 401) {
-  //   openModalUnauth();
-  //   return;
-  // }
   const response = await fetch("http://localhost:3000/database/download", {
     method: "POST",
     body: JSON.stringify({ token: `${localStorage.getItem("token")}` }),
@@ -311,10 +306,13 @@ const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL() {
-  const items = localStorage.getItem("items");
+  const sent = {
+    token: localStorage.getItem("token"),
+    todos: localStorage.getItem("items")
+  }
   const response = await fetch("http://localhost:3000/database/upload", {
     method: "POST",
-    body: items,
+    body: JSON.stringify(sent),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
