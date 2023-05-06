@@ -138,8 +138,14 @@ const buildElement = (element, cssClass) => {
 }
 
 const createNewTodo = document.querySelectorAll(".create");
+const unlogModal = document.querySelector(".modal-caution");
+let once = localStorage.getItem("name");
 createNewTodo.forEach(element => {
   element.addEventListener("click", () => {
+    if(!once){
+      unlogModal.style.display = "block";
+      once = true;
+    }
     createTodo();
   });
 });
@@ -150,24 +156,32 @@ if(token) {
   document.querySelector(".signup").style.display = "none";
   document.querySelector(".login").style.display = "none";
   document.querySelector(".signout").style.display = "block";
-  if(token){
-    const getUsername = async (token) => {
-      const response = await fetch("http://localhost:3000/users/username", {
-        method: "POST",
-        body: JSON.stringify(token),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        }
-      });
-      if(!response.ok){
-        return "failed";
-      } else {
-        return response.text();
+  (async () => {
+    const tokenObj = {token: `${token}`};
+    const response = await fetch("http://localhost:3000/users/username", {
+      method: "POST",
+      body: JSON.stringify(tokenObj),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
       }
+    });
+    if(!response.ok){
+      const err = await response.json();
+      console.log(`error: ${err}`);
+      return;
+    } else {
+      const name = await response.json();
+      localStorage.setItem("name", JSON.stringify(name));
+      document.querySelector(".user").innerHTML = name;
+      return;
     }
-    console.log(getUsername(token));
-  }
+  })();
+} else {
+  localStorage.removeItem("name");
+  document.querySelector(".user").innerHTML = "guest";
 }
+
+
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
 if(checkLocal !== null)
@@ -272,13 +286,21 @@ uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL(){
   const items = localStorage.getItem("items");
-  const result = await fetch("http://localhost:3000/database/upload" , {
+  const response = await fetch("http://localhost:3000/database/upload" , {
       method: "POST",
       body: items,
       headers: {
           "Content-type": "application/json; charset=UTF-8",
       }
   });
+  if(!response.ok){
+    if(response.status === 401) {
+      openModalUnauth();
+      return;
+    }
+  } else {
+    document.querySelector(".modal-UL").style.display = "block";
+  }
 }
 
 //signup page:
@@ -316,16 +338,13 @@ async function signup(event){
     }
   } else {
     let token = await response.text();
-    token = token.replace(/^"(.*)"$/, '$1');
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", JSON.stringify(token));
     signedUp.style.display = "block";
     setTimeout(() => {
       location.reload();
     }, 2500);
   }
 }
-
-
 
 //login page:
 const loginModal = document.querySelector(".modal-login");
@@ -339,6 +358,7 @@ loginPage.addEventListener("click", () => {
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  document.querySelector(".not-match").style.display = "none";
   const formData = new FormData(loginForm);
   const formDataObj = Object.fromEntries(formData.entries());
   const response = await fetch("http://localhost:3000/users/login", {
@@ -355,11 +375,11 @@ loginForm.addEventListener("submit", async (event) => {
     welcome.style.display = "block";
     location.reload();
   } else {
-    console.log("credentials does not match.");
+    document.querySelector(".not-match").style.display = "block";
   }
 })
 
-//signout page :
+//signout:
 const signout = document.querySelector(".signout");
 signout.addEventListener("click" , () => {
   localStorage.removeItem("token");

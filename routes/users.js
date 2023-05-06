@@ -65,17 +65,25 @@ router.post("/signup", async (req,res) => {
   res.status(200).json(user.token);
 })
 
-router.post("/username", (req,res) => {
-  const user = req.body;
-  let users = fs.readFile("./database/users.json", { encoding: "utf-8" });
-  users = JSON.parse(users);
-  const found = users.find((u) => {
-    return u.token === user;
-  })
-  if(found) {
-    const fullname = found.fullname;
-      res.send(fullname);
-  }
+router.post("/username", (req, res) => {
+  // Read username and password from request body
+  const { token } = req.body;
+  console.log(JSON.parse(token));
+  fs.readFile("./database/users.json", (err, data) => {
+    if (err) throw err;
+
+    const users = JSON.parse(data);
+
+    const user = users.find((u) => {
+      return u.token === JSON.parse(token);
+    });
+
+    if (user) {
+      res.json(user.fullname);
+    } else {
+      res.status(404).json("user not found");
+    }
+  });
 });
 
 module.exports = router;

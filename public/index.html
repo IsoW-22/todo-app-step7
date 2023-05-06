@@ -20,7 +20,7 @@
   <body>
     <div id="container">
       <nav>
-        <span class="close-menu" onclick="closeMenu()"> &times; </span>
+        <span class="close-menu"> &times; </span>
         <span id="date"></span>
         <ul>
           <li><button class="upload">Upload</button></li>
@@ -34,7 +34,7 @@
       </nav>
       <article>
         <div class="upper-part">
-          <span class="open-menu" onclick="openMenu()">&#9776;</span>
+          <span class="open-menu">&#9776;</span>
           <div class="welcome-create-bundle">
             <div class="welcome">
               <p>welcome <span class="pointer user">new user</span></p>
@@ -121,15 +121,22 @@
 
           <button type="submit">Login</button>
           <p class="logged-in"></p>
+          <p class="not-match">credentials doesn't match with any in our server.</p>
         </form>
       </div>
     </div>
     <!-- login end -->
 
+    <div class="modal-caution">
+      <div class="modalContent">
+        <span class="close-modal">&times;</span>
+        <p>caution: by Logging in you can upload and download your todos. using guest account may result in losing your todos</p>
+      </div>
+    </div>
+
     <script src="./scripts/date.js"></script>
     <script src="./scripts/functions.js"></script>
     <script src="./scripts/menu.js"></script>
-    <script src="./scripts/username.js"></script>
     <script src="./scripts/modals.js"></script>
   </body>
 </html>

@@ -59,10 +59,6 @@ article {
   pointer-events: none;
 }
 
-span {
-  cursor: pointer;
-}
-
 [disabled] {
   opacity: 0.2 !important;
   pointer-events: none;
@@ -72,6 +68,7 @@ span {
   color: #000;
   font-size: 30px;
   margin-left: 10px;
+  cursor: pointer;
 }
 .create {
   margin-left: 45px;
@@ -195,6 +192,7 @@ span {
   position: absolute;
   top: 10px;
   right: 10px;
+  cursor: pointer;
 }
 
 .mobile-create {
@@ -289,7 +287,17 @@ body {
 .signout {
   display: none;
 }
-
+.caution {
+  display: none;
+  color: white;
+  font-size: 1rem;
+  margin: 13px;
+}
+.not-match {
+  font-size: 1rem;
+  margin-top: 10px;
+  display: none;
+}
 @media only screen and (max-width: 720px) {
   article {
     overflow: auto;
