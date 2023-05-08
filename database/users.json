@@ -4,7 +4,15 @@
     "email": "sdgsdg",
     "username": "mosi",
     "password": "adminadmin",
-    "todos": [{ "value": "new task", "done": false, "id": "item-2" }],
+    "todos": [
+      { "value": "new task", "done": false, "id": "item--3" },
+      { "value": "new task", "done": false, "id": "item--2" },
+      { "value": "new task", "done": false, "id": "item--1" },
+      { "value": "new task", "done": false, "id": "item-0" },
+      { "value": "new task", "done": false, "id": "item-1" },
+      { "value": "new task", "done": false, "id": "item-2" },
+      { "value": "new task", "done": false, "id": "item-3" }
+    ],
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"
   }
 ]

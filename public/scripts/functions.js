@@ -1,6 +1,6 @@
 "use strict";
 
-const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
+function createTodo(todoText, doneCheck, todoId, oldTodo) {
   const body = document.querySelector(".items");
   const counter = body.childNodes.length - 3;
 
@@ -119,9 +119,9 @@ const createTodo = (todoText, doneCheck, todoId, oldTodo) => {
       localStorage.setItem("items", `[${jsonNewTodo}]`);
     }
   }
-};
+}
 
-const contentChanged = (text, id) => {
+function contentChanged(text, id) {
   let localStorageItems = JSON.parse(localStorage.getItem("items"));
   localStorageItems.find((element) => {
     if (element.id === id) {
@@ -130,13 +130,13 @@ const contentChanged = (text, id) => {
   });
   localStorageItems = JSON.stringify(localStorageItems);
   localStorage.setItem("items", localStorageItems);
-};
+}
 
-const buildElement = (element, cssClass) => {
+function buildElement(element, cssClass) {
   const newElement = document.createElement(element);
   if (cssClass) newElement.classList.add(cssClass);
   return newElement;
-};
+}
 
 const createNewTodo = document.querySelectorAll(".create");
 const unlogModal = document.querySelector(".modal-caution");
@@ -151,14 +151,14 @@ createNewTodo.forEach((element) => {
   });
 });
 
-// page onload
+// page onload to check token
 const token = localStorage.getItem("token");
+const tokenObj = { token: `${token}` };
 if (token) {
   document.querySelector(".signup").style.display = "none";
   document.querySelector(".login").style.display = "none";
   document.querySelector(".signout").style.display = "block";
   (async () => {
-    const tokenObj = { token: `${token}` };
     const response = await fetch("http://localhost:3000/users/username", {
       method: "POST",
       body: JSON.stringify(tokenObj),
@@ -167,6 +167,11 @@ if (token) {
       },
     });
     if (!response.ok) {
+      if (response.status === 403) {
+        localStorage.removeItem("token");
+        location.reload();
+        return;
+      }
       const err = await response.json();
       console.log(`error: ${err}`);
       return;
@@ -184,12 +189,11 @@ if (token) {
 
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
-if (checkLocal !== null)
-  if (checkLocal !== "[]") {
+if (checkLocal !== null && checkLocal !== "[]"){
     checkLocal.forEach((element) => {
       createTodo(element.value, element.done, element.id, true);
     });
-  }
+}
 
 //showing all todos
 const allTodoSelect = () => {
@@ -308,8 +312,8 @@ uploadButton.addEventListener("click", fetchUL);
 async function fetchUL() {
   const sent = {
     token: localStorage.getItem("token"),
-    todos: localStorage.getItem("items")
-  }
+    todos: localStorage.getItem("items"),
+  };
   const response = await fetch("http://localhost:3000/database/upload", {
     method: "POST",
     body: JSON.stringify(sent),
