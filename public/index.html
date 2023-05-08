@@ -19,6 +19,32 @@
   </head>
   <body>
     <div id="container">
+      <!-- background -->
+      <div id="background">
+        <!-- header -->
+        <header>
+          <span class="open-menu">&#9776;</span>
+          <div class="welcome">
+            <p>welcome <span class="pointer user">new user</span></p>
+          </div>
+          <div class="auth">
+            <button class="signup">Signup</button>
+            <button class="login">Login</button>
+            <button class="signout">Signout</button>
+          </div>
+        </header>
+
+        <!-- main body -->
+        <article>
+          <div class="create" id="create" onclick="">
+            <button>Create new Todo</button>
+          </div>
+          <div class="items"></div>
+          <div class="mobile-create"></div>
+        </article>
+      </div>
+
+      <!-- navigation -->
       <nav>
         <span class="close-menu"> &times; </span>
         <span id="date"></span>
@@ -32,32 +58,6 @@
           <li class="completed">Completed Todos</li>
         </ul>
       </nav>
-      <article>
-        <div class="upper-part">
-          <span class="open-menu">&#9776;</span>
-          <div class="welcome-create-bundle">
-            <div class="welcome">
-              <p>welcome <span class="pointer user">new user</span></p>
-            </div>
-            <div class="big-create">
-              <div class="create" id="create">
-                <button>Create new Todo</button>
-              </div>
-            </div>
-          </div>
-          <div class="auth">
-            <button class="signup">Signup</button>
-            <button class="login">Login</button>
-            <button class="signout">Signout</button>
-          </div>
-        </div>
-        <div class="items"></div>
-        <div class="mobile-create">
-          <div class="create" id="create" onclick="">
-            <button>Create new Todo</button>
-          </div>
-        </div>
-      </article>
     </div>
 
     <!-- modals -->
@@ -89,16 +89,16 @@
         <span class="close-modal">&times;</span>
         <form action="POST" class="signup-form">
           <label for="fullName">Full name:</label>
-          <input type="text" name="fullname" required>
+          <input type="text" name="fullname" required />
 
           <label for="email">Email:</label>
-          <input type="text" name="email" required>
+          <input type="text" name="email" required />
 
           <label for="username">Username:</label>
-          <input type="text" name="username" required>
+          <input type="text" name="username" required />
 
           <label for="password">Password:</label>
-          <input type="password" name="password" minlength="8">
+          <input type="password" name="password" minlength="8" />
 
           <button type="submit">Signup</button>
           <p class="exist">this email already exists</p>
@@ -114,14 +114,16 @@
         <span class="close-modal">&times;</span>
         <form action="POST" class="login-form">
           <label for="username">Username:</label>
-          <input type="text" name="username" required>
+          <input type="text" name="username" required />
 
           <label for="password">Password:</label>
-          <input type="password" name="password" minlength="8">
+          <input type="password" name="password" minlength="8" />
 
           <button type="submit">Login</button>
           <p class="logged-in"></p>
-          <p class="not-match">credentials doesn't match with any in our server.</p>
+          <p class="not-match">
+            credentials doesn't match with any in our server.
+          </p>
         </form>
       </div>
     </div>
@@ -130,7 +132,10 @@
     <div class="modal-caution">
       <div class="modalContent">
         <span class="close-modal">&times;</span>
-        <p>caution: by Logging in you can upload and download your todos. using guest account may result in losing your todos</p>
+        <p>
+          caution: by Logging in you can upload and download your todos. using
+          guest account may result in losing your todos
+        </p>
       </div>
     </div>
 
