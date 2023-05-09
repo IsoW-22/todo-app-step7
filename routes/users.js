@@ -78,7 +78,7 @@ router.post("/username", (req, res) => {
     });
 
     if (user) {
-      res.json(user.fullname);
+      res.json(user.username);
     } else {
       res.status(403).json("user not found");
     }

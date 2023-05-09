@@ -2,7 +2,7 @@
 
 function createTodo(todoText, doneCheck, todoId, oldTodo) {
   const body = document.querySelector(".items");
-  const counter = body.childNodes.length - 3;
+  const counter = body.childNodes.length;
 
   // input todo
   const todoContainer = buildElement("div", "todo-item");
@@ -33,7 +33,8 @@ function createTodo(todoText, doneCheck, todoId, oldTodo) {
   editButton.appendChild(editImg);
   editButton.addEventListener("click", (event) => {
     const { target } = event;
-    const input = target.parentNode.parentNode.parentNode.querySelector(".task");
+    const input =
+      target.parentNode.parentNode.parentNode.querySelector(".task");
     input.readOnly = false;
     input.focus();
     input.select();
@@ -88,13 +89,12 @@ function createTodo(todoText, doneCheck, todoId, oldTodo) {
   deleteButton.appendChild(deleteImg);
   deleteButton.addEventListener("click", (event) => {
     const { target } = event;
-    const targetID = target.parentNode.id;
+    const targetID = target.parentNode.parentNode.id;
     let items = JSON.parse(localStorage.getItem("items"));
-    let filtered = items.filter(function (el) {
+    const filtered = items.filter(function (el) {
       return el.id != targetID;
     });
-    filtered = JSON.stringify(filtered);
-    localStorage.setItem("items", filtered);
+    localStorage.setItem("items", JSON.stringify(filtered));
     target.parentNode.parentNode.remove();
   });
 
@@ -138,17 +138,15 @@ function buildElement(element, cssClass) {
   return newElement;
 }
 
-const createNewTodo = document.querySelectorAll(".create");
+const createNewTodo = document.querySelector(".create");
 const unlogModal = document.querySelector(".modal-caution");
-let once = localStorage.getItem("name");
-createNewTodo.forEach((element) => {
-  element.addEventListener("click", () => {
-    if (!once) {
-      unlogModal.style.display = "block";
-      once = true;
-    }
-    createTodo();
-  });
+let once = localStorage.getItem("token");
+createNewTodo.addEventListener("click", () => {
+  if (!once) {
+    unlogModal.style.display = "block";
+    once = true;
+  }
+  createTodo();
 });
 
 // page onload to check token
@@ -189,10 +187,12 @@ if (token) {
 
 //add todo on startup
 const checkLocal = JSON.parse(localStorage.getItem("items"));
-if (checkLocal !== null && checkLocal !== "[]"){
-    checkLocal.forEach((element) => {
-      createTodo(element.value, element.done, element.id, true);
-    });
+if (checkLocal !== null && checkLocal !== "[]") {
+  checkLocal.forEach((element) => {
+    createTodo(element.value, element.done, element.id, true);
+  });
+} else {
+  localStorage.setItem("items", "[]");
 }
 
 //showing all todos
@@ -287,22 +287,26 @@ async function fetchDL() {
   if (!response.ok) {
     if (response.status === 401) {
       openModalUnauth();
-      return;
+      // return;
     } else {
       const err = await response.json();
       console.log(`error: ${err}`);
     }
   } else {
-    localStorage.removeItem("items");
+    localStorage.setItem("items","[]");
     const removeTodos = document.querySelectorAll(".items .todo-item");
     removeTodos.forEach((item) => {
       item.remove();
     });
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
+    if(jsonResponse.length === 0) {
+      document.querySelector(".modal-DL-spec").style.display = "block";
+      return;
+    }
     jsonResponse.forEach((element) => {
       createTodo(element.value, element.isdone, element.id, false);
     });
+    document.querySelector(".modal-DL").style.display = "block";
   }
 }
 
@@ -310,13 +314,14 @@ const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL() {
-  const sent = {
+  if(!localStorage.getItem("items")) localStorage.setItem("items","[]");
+  const request = {
     token: localStorage.getItem("token"),
     todos: localStorage.getItem("items"),
   };
   const response = await fetch("http://localhost:3000/database/upload", {
     method: "POST",
-    body: JSON.stringify(sent),
+    body: JSON.stringify(request),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
@@ -413,6 +418,9 @@ loginForm.addEventListener("submit", async (event) => {
 //signout:
 const signout = document.querySelector(".signout");
 signout.addEventListener("click", () => {
+  document.querySelector(".modal-lgout").style.display = "block";
   localStorage.removeItem("token");
-  location.reload();
+  setTimeout(() => {
+    location.reload();
+  }, 2500);
 });

@@ -401,6 +401,49 @@ nav {
     opacity: 1;
   }
 }
+.signup-form, .login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.signup-form input,
+.login-form input{
+  width: 90%;
+  max-width: 300px;
+  height: 40px;
+  padding-left: 8px;
+  font-size: 20px;
+}
+.signup-form input:focus,
+.login-form  input:focus{
+  background-color: rgb(238, 238, 140);
+}
+.signup-form label,
+.login-form label {
+  color: white;
+  display: block;
+  margin-top: 20px;
+}
+.signup-form button,
+.login-form button {
+  display: block;
+  margin-top: 10px;
+  width: 70px;
+  height: 40px;
+  background-color: rgb(238, 238, 140);
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.signup-form button:hover,
+.login-form button:hover {
+  background-color: rgb(237, 237, 175);
+}
+.exist, .signed, .not-match {
+  margin-top: 10px;
+  display: none;
+}
 /* modals end */
 
 /* responsive */
