@@ -1,1 +1,10 @@
-[{"fullname":"mostafa zeighami","email":"sdgsdg","username":"mosi","password":"adminadmin","todos":[],"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"}]
+[
+  {
+    "fullname": "name familyname",
+    "email": "something@mail.com",
+    "username": "admin",
+    "password": "adminadmin",
+    "todos": [],
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdkcyIsImlhdCI6MTY4Mjg1NzEyNX0.VljQ4f-1hDEXP9GO7wHTejklnT1LuGRWqx8EOYgPgkg"
+  }
+]
