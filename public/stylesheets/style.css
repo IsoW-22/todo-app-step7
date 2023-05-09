@@ -184,6 +184,7 @@ article {
   width: 100%;
   justify-content: space-around;
   overflow: auto;
+  margin-top: 8px;
 }
 .todo-item {
   position: relative;
