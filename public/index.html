@@ -36,11 +36,8 @@
 
         <!-- main body -->
         <article>
-          <div class="create" id="create" onclick="">
-            <button>Create new Todo</button>
-          </div>
+          <button class="create" id="create">Create new Todo</button>
           <div class="items"></div>
-          <div class="mobile-create"></div>
         </article>
       </div>
 
@@ -48,10 +45,10 @@
       <nav>
         <span class="close-menu"> &times; </span>
         <span id="date"></span>
-        <ul>
-          <li><button class="upload">Upload</button></li>
-          <li><button class="download">Download</button></li>
-        </ul>
+        <div class="UL-DL">
+          <button class="upload">Upload</button>
+          <button class="download">Download</button>
+        </div>
         <ul class="tasks">
           <li class="all selected-task">All Todos</li>
           <li class="active">Active Todos</li>
@@ -81,7 +78,6 @@
         <p>Please login to use upload or download</p>
       </div>
     </div>
-    <!-- modals end -->
 
     <!-- signup modal -->
     <div class="modal-signup">

@@ -33,7 +33,7 @@ function createTodo(todoText, doneCheck, todoId, oldTodo) {
   editButton.appendChild(editImg);
   editButton.addEventListener("click", (event) => {
     const { target } = event;
-    const input = target.parentNode.parentNode.querySelector(".task");
+    const input = target.parentNode.parentNode.parentNode.querySelector(".task");
     input.readOnly = false;
     input.focus();
     input.select();
@@ -47,7 +47,7 @@ function createTodo(todoText, doneCheck, todoId, oldTodo) {
   doneButton.appendChild(doneImg);
   doneButton.addEventListener("click", (event) => {
     const { target } = event;
-    const parent = target.parentNode.parentNode;
+    const parent = target.parentNode.parentNode.parentNode;
     const parentID = parent.id;
     if (parent.classList.contains("done-item")) {
       parent.classList.toggle("done-item");
@@ -95,7 +95,7 @@ function createTodo(todoText, doneCheck, todoId, oldTodo) {
     });
     filtered = JSON.stringify(filtered);
     localStorage.setItem("items", filtered);
-    target.parentNode.remove();
+    target.parentNode.parentNode.remove();
   });
 
   //adding focus after adding element
