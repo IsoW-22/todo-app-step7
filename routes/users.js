@@ -24,10 +24,28 @@ router.post("/login", (req, res) => {
     });
 
     if (user) {
-      const accessToken = user.token;
+      let userToken;
+      if(!user.token){
+        userToken = jwt.sign(
+          { username: user.username, email: user.email },
+          accessTokenSecret
+        );
+        const newUsers = users.filter(v => {return v.username !== username});
+        user.token = userToken;
+        newUsers.push(user);
+        fs.writeFile("./database/users.json",
+        JSON.stringify(newUsers),
+        { encoding: "utf-8" },
+        (err) => {
+          if (err) res.send(err);
+          return;
+      })
+      } else {
+        userToken = user.token;
+      }
       const fullname = user.fullname;
       res.json({
-        accessToken,
+        userToken,
         fullname,
       });
     } else {
@@ -84,5 +102,26 @@ router.post("/username", (req, res) => {
     }
   });
 });
+
+router.post("/signout", (req, res) => {
+  const { user } = req.body;
+  fs.readFile("./database/users.json", (err, data) => {
+    if(err) throw err;
+
+    const users = JSON.parse(data);
+    console.log(users);
+    users.forEach(el => {
+      if(el.username === user) { delete el.token; }
+    });
+    fs.writeFile("./database/users.json",
+    JSON.stringify(users),
+    { encoding: "utf-8" },
+    (err) => {
+      if (err) res.send(err);
+      return;
+    })
+    res.sendStatus(200);
+  })
+})
 
 module.exports = router;

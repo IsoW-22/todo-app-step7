@@ -293,13 +293,13 @@ async function fetchDL() {
       console.log(`error: ${err}`);
     }
   } else {
-    localStorage.setItem("items","[]");
+    localStorage.setItem("items", "[]");
     const removeTodos = document.querySelectorAll(".items .todo-item");
     removeTodos.forEach((item) => {
       item.remove();
     });
     const jsonResponse = await response.json();
-    if(jsonResponse.length === 0) {
+    if (jsonResponse.length === 0) {
       document.querySelector(".modal-DL-spec").style.display = "block";
       return;
     }
@@ -314,7 +314,7 @@ const uploadButton = document.querySelector(".upload");
 uploadButton.addEventListener("click", fetchUL);
 
 async function fetchUL() {
-  if(!localStorage.getItem("items")) localStorage.setItem("items","[]");
+  if (!localStorage.getItem("items")) localStorage.setItem("items", "[]");
   const request = {
     token: localStorage.getItem("token"),
     todos: localStorage.getItem("items"),
@@ -403,8 +403,8 @@ loginForm.addEventListener("submit", async (event) => {
     },
   });
   const token = await response.json();
-  if (token.hasOwnProperty("accessToken")) {
-    localStorage.setItem("token", JSON.stringify(token.accessToken));
+  if (token.hasOwnProperty("userToken")) {
+    localStorage.setItem("token", JSON.stringify(token.userToken));
     welcome.innerText = `welcome ${token.fullname}`;
     welcome.style.display = "block";
     setTimeout(() => {
@@ -417,10 +417,37 @@ loginForm.addEventListener("submit", async (event) => {
 
 //signout:
 const signout = document.querySelector(".signout");
-signout.addEventListener("click", () => {
-  document.querySelector(".modal-lgout").style.display = "block";
-  localStorage.removeItem("token");
-  setTimeout(() => {
-    location.reload();
-  }, 2500);
+signout.addEventListener("click", async () => {
+  const response = await fetch("http://localhost:3000/users/username", {
+    method: "POST",
+    body: JSON.stringify(tokenObj),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    console.log(`error: ${err}`);
+  } else {
+    const username = await response.json();
+    const usernameObj = { user: username }
+    const delTokenRes = await fetch("http://localhost:3000/users/signout", {
+      method: "POST",
+      body: JSON.stringify(usernameObj),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    const finalRes = delTokenRes;
+    if (!finalRes.ok) {
+      console.error("error: " + finalRes);
+    } else {
+      console.log(finalRes);
+      document.querySelector(".modal-lgout").style.display = "block";
+      localStorage.removeItem("token");
+      setTimeout(() => {
+        location.reload();
+      }, 2500);
+    }
+  }
 });
